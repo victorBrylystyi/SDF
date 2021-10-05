@@ -1,0 +1,54 @@
+{
+  "name": "sdf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node server.js",
+    "startDemo": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "git": "git add . && git commit -m 'first' && git push -u origin main"
+  },
+  "engines": {
+    "node": "14.15.5",
+    "npm": "7.14.0"
+  },
+  "keywords": [
+    "SDF",
+    "threeJS",
+    "r3f",
+    "react",
+    "shader",
+    "webgl"
+  ],
+  "author": "Viktor Brylystyi",
+  "license": "ISC",
+  "dependencies": {
+    "@react-three/drei": "^7.0.6",
+    "@react-three/fiber": "^7.0.4",
+    "express": "^4.17.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.5",
+    "react-scripts": "^4.0.3",
+    "redux": "^4.1.1",
+    "three": "^0.130.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "raw-loader": "^4.0.2"
+  }
+}
