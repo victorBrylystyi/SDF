@@ -8,7 +8,7 @@ export const targetReducer =  (prevState = [0,0,0], action) => {
             {
                 const nextState = action.payload.slice();
 
-                return nextState
+                return nextState;
             }
   
         default: return prevState;

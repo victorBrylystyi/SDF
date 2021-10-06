@@ -10,7 +10,7 @@ const Controls = (props) => {
     const get = useThree(state => state.get);
 
     useEffect(()=>{
-      console.log('controls: target update');
+      console.log('controls: camera.position.y update');
 
       const { camera } = get();
       camera.position.y = target[1];
@@ -29,7 +29,7 @@ const mapStateToProps = (state) => {
     return {
       target,
     };
-  };
+};
 
 
 export default connect(mapStateToProps)(Controls);

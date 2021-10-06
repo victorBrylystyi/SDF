@@ -16,7 +16,8 @@ const Main = (props) => {
 
     const get = useThree((state)=>state.get);
 
-    const { camera } = get();
+
+    const { camera, scene } = get();
 
     const shaderData = useMemo(()=>{
         console.log('main: memo shaderData');
@@ -45,8 +46,29 @@ const Main = (props) => {
         const scale = 0.05;
         const scaleModel = new THREE.Vector3(scale,scale,scale);
 
-        const bodyMat = new THREE.MeshStandardMaterial({color:'grey'});
+        console.log( lampModel);
+
+        const bodyMat = new THREE.MeshPhysicalMaterial({color:'grey'});
+        // bodyMat.roughness = 0.2;
+        // bodyMat.metalness = 1.6;
+        // bodyMat.reflectivity = 0.3;
+        // bodyMat.clearcoat = 0.4;
+
+
+        const glassGeom = lampModel.nodes.glass.geometry.clone();
+
+        // glassGeom.computeBoundingBox()
+        // glassGeom.computeBoundingSphere();
+        // glassGeom.computeTangents();
+        // glassGeom.computeVertexNormals();
+
         const bodyGeom = lampModel.nodes.body.geometry.clone();
+
+        // bodyGeom.computeBoundingBox()
+        // bodyGeom.computeBoundingSphere();
+        // bodyGeom.computeTangents();
+        // bodyGeom.computeVertexNormals();
+
         const center = new THREE.Vector3();
         bodyGeom.boundingBox.getCenter(center);
 
@@ -58,7 +80,7 @@ const Main = (props) => {
                 m:bodyMat,
             },
             glass:{
-                g:lampModel.nodes.glass.geometry.clone()
+                g:glassGeom
             },
             scale: scaleModel,
             centerCamera 
@@ -76,7 +98,6 @@ const Main = (props) => {
 
         camera.updateProjectionMatrix();
         camera.updateWorldMatrix();
-        
 
         mainMesh.current.material.uniforms.resolution.value.x = window.innerWidth;
         mainMesh.current.material.uniforms.resolution.value.y = window.innerHeight;
@@ -98,10 +119,15 @@ const Main = (props) => {
         <>
             <group scale={lamp.scale}>
                 <mesh geometry={lamp.body.g}  material={lamp.body.m} />
+                {/* <mesh geometry={lamp.glassOut.g}  material={lamp.glassOut.m} visible={true}/> */}
                 <mesh ref={mainMesh} geometry={lamp.glass.g} > 
-                    <shaderMaterial attach='material' vertexShader={ shaderData.shaders.vs} fragmentShader={shaderData.shaders.fs} uniforms={shaderData.uniforms} />
+                        <shaderMaterial attach='material' vertexShader={ shaderData.shaders.vs} fragmentShader={shaderData.shaders.fs} uniforms={shaderData.uniforms} transparent={true} />
                 </mesh>
             </group>
+            <mesh position = {[0,20,30]}> 
+                <boxGeometry args={[10,10,10]}/>
+                <meshBasicMaterial color='red' />
+            </mesh>
         </>
     );
 };

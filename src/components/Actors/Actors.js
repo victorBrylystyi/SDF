@@ -7,6 +7,8 @@ const Actors = (props) => {
 
     const { assets } = props;
 
+    // console.log(assets);
+
     return (
         <Main texture ={assets.env} lampModel={assets.lamp} />
     );

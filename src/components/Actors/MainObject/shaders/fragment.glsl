@@ -9,6 +9,8 @@ uniform float dpr;
 uniform sampler2D textureEnv;
 
 varying mat4 model;
+varying vec3 world_Vertex;
+varying vec3 world_Normal;
 
 #define STEPS 96
 #define STEP_SIZE 1.0 / 96.0
@@ -24,9 +26,6 @@ vec3 glow = vec3(0.0);
 float glow_intensity = .01;
 vec3 glow_color = vec3(1.0);
 vec3 background = vec3(0.0);
-
-float sinVal = 0.0;
-float cosVal = 0.0;
 
 // ------------------------- Utils ----------------------------
 
@@ -329,7 +328,7 @@ float shortestDistanceToSurface(vec3 eye, vec3 marchingDirection, float start, f
 }
 
 
-vec3 raymarch(float s) {
+vec4 raymarch(float s) {
 
     vec2 newResolution = resolution.xy * dpr;
 
@@ -354,6 +353,9 @@ vec3 raymarch(float s) {
 
     float dist = shortestDistanceToSurface(eye, ray, MIN_DIST, MAX_DIST); // ret +depth or 100
 
+    vec3 I = normalize(world_Vertex - eye);
+    float R = fresnel(0.02, 4.0, 4.0, I, world_Normal);
+
 
     if (dist > MAX_DIST - EPSILON) {
 
@@ -362,7 +364,13 @@ vec3 raymarch(float s) {
         float bb = ((sin(time/20.0) + 1.0) / 2.0);
 
         // Didn't hit anything
-        return vec3(rr, gg, bb);
+        // return vec3(rr, gg, bb);
+        vec4 c = vec4(0.0, 0.0, 0.0, 0.0);
+        c+=R*0.7;
+        return c;
+        // return world_Vertex;
+        // return vec3(0.105, 0.121, 0.164);
+        
 
     } 
 
@@ -377,19 +385,26 @@ vec3 raymarch(float s) {
 // ------------------------ Normals ------------------------------
 
     // vec3 pos = eye + dist * worldDir; // dist - sdf
-        vec3 pos = eye + dist * ray; // dist - sdf
+    vec3 pos = eye + dist * ray; // dist - sdf
 
     vec3 normal = sceneNormal(pos);
 
-    float r = ((cos(time/30.0) + 1.0) / 2.0) * normal.r;
-    float g = ((sin(time/10.0) + 1.0) / 2.0) * normal.g;
-    float b = ((sin(time/20.0) + 1.0) / 2.0) * normal.b;
+    // float r = ((cos(time/30.0) + 1.0) / 2.0) * normal.r;
+    // float g = ((sin(time/10.0) + 1.0) / 2.0) * normal.g;
+    // float b = ((sin(time/20.0) + 1.0) / 2.0) * normal.b;
+
+    float r = ((cos(time/30.0) + 1.0) / 2.0) ;
+    float g = ((sin(time/10.0) + 1.0) / 2.0) ;
+    float b = ((sin(time/20.0) + 1.0) / 2.0) ;
 
     vec3 baseColor = vec3(r, g, b);
 
     // return normal;
 
 // ---------------------------------------------------------------
+
+
+// ------------------------------
 
     vec3 ambColor = vec3(1.0,1.0,1.0);
     vec3 lightColor = vec3(1.0,1.0,1.0);
@@ -405,6 +420,11 @@ vec3 raymarch(float s) {
 
     vec3 halfVector = normalize((pos-eye) );
 
+// ---------------
+
+//float fresnel(float bias, float scale, float power, vec3 I, vec3 N){
+//----------------
+
     vec3 spec = (pow(dot(normal, halfVector), 100.0) * specColor) * specInt;
 
     // vec3 specRay = reflect(transformed(worldDir), normal);
@@ -412,9 +432,13 @@ vec3 raymarch(float s) {
     // vec3 colorTexture = texture2D(textureEnv, transformed(specRay).xy).rgb;
 
 
-    vec3 color = ambColor * abmInt ;
-    color += baseColor * diffuse; //
-    color += spec;
+    // vec4 color = ambColor * abmInt ;
+    // color += baseColor * diffuse; //
+    // color += spec;
+    // color += R*0.4;
+
+    vec4 color = vec4( baseColor, 1.0 );
+    color += R*1.4;
 
     return color; 
 
@@ -480,9 +504,9 @@ void main( void ) {
 
     // vec2 p = (-newResolution.xy + 2.0*gl_FragCoord.xy) / newResolution.y; // точка на экране [-1;1]
 
-    vec3 color = raymarch(1.0);
+    vec4 color = raymarch(1.0);
 
-    gl_FragColor = vec4(color, 1.0);
+    gl_FragColor = color;
 }
 
 
