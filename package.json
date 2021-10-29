@@ -9,7 +9,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "git": "git add . && git commit -m 'progress' && git push -u origin main"
+    "git": "git add . && git commit -m 'change sdf color intensity' && git push -u origin main"
   },
   "engines": {
     "node": "14.15.5",

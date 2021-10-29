@@ -295,6 +295,7 @@ void main( void ) {
 
     vec4 rsltColor = mix(insideColor, envColor2, R);
     rsltColor += R*0.7;
+    rsltColor.rgb *= 1.5;
  
     gl_FragColor = rsltColor;
 }

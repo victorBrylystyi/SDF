@@ -24,7 +24,7 @@ const Env = () => {
 
     return (
         <>
-            <color attach="background" args={ 0x184FC6 } /> //#184FC6  0x010620 0x1B1F2A 0x071D59
+            <color attach="background" args={ 0x184FC6 } /> 
             <ambientLight intensity= {0.5} />
             <pointLight ref={pointLight} intensity={1.0} position={[0,10,10]} color='red'/>
         </>
