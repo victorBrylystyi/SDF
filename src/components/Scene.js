@@ -1,6 +1,6 @@
 
-import { useFrame, useThree } from "@react-three/fiber";
-import React, { Suspense, useCallback, useMemo, useRef, useState } from "react";
+import { useFrame } from "@react-three/fiber";
+import React, { Suspense, useRef } from "react";
 
 import Controls from "./Controls";
 import Progress from "./Progress";
@@ -37,7 +37,7 @@ const Scene = () => {
         <>
             <Env />
             <Controls />
-            <Suspense fallback={null}>
+            <Suspense fallback={<Progress />}>
                 <Store /> 
             </Suspense>
         </>

@@ -1,4 +1,4 @@
-import { Environment, useCubeTexture, useGLTF, useTexture } from "@react-three/drei";
+import { useCubeTexture, useGLTF } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { useMemo } from "react";
 import Actors from "./Actors/Actors";
