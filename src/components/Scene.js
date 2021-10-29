@@ -1,45 +1,44 @@
 
+import { useFrame, useThree } from "@react-three/fiber";
+import React, { Suspense, useCallback, useMemo, useRef, useState } from "react";
 
-import { useHelper } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
-import React, { Suspense, useRef } from "react";
-import { PointLightHelper } from "three";
 import Controls from "./Controls";
-import Provider from "./Provider";
+import Progress from "./Progress";
+import Store from "./Store";
 
 
-const Environment = () => {
-    console.log('env 3');
+const Env = () => {
 
     const pointLight = useRef(null);
-    useHelper(pointLight, PointLightHelper, 2.5, "hotpink");
 
     useFrame(({clock}) => {
+        
+        pointLight.current.position.x = Math.sin(clock.elapsedTime/3) * 10;
+        pointLight.current.position.z = Math.cos(clock.elapsedTime/3) * 10;
 
-        pointLight.current.position.x = Math.sin(clock.elapsedTime) * 10;
-        pointLight.current.position.z = Math.cos(clock.elapsedTime) * 10;
+        pointLight.current.color.r = (Math.sin(clock.elapsedTime/20) + 1) / 2;
+        pointLight.current.color.g = (Math.cos(clock.elapsedTime/30) + 1) / 2;
+        pointLight.current.color.b = (Math.sin(clock.elapsedTime/40) + 1) / 2;
 
     });
 
     return (
         <>
-            <color attach="background" args={0x071D59 } /> //#184FC6  0x010620 0x1B1F2A
-            {/* <fog attach="fog" args={['#101010', -100, 50]} />  //#101010 */}
+            <color attach="background" args={ 0x184FC6 } /> //#184FC6  0x010620 0x1B1F2A 0x071D59
             <ambientLight intensity= {0.5} />
-            <pointLight ref={pointLight} intensity={2.0} position={[10,20,0]} color='red'/>
+            <pointLight ref={pointLight} intensity={1.0} position={[0,10,10]} color='red'/>
         </>
     );
 };
 
 const Scene = () => {
-    console.log('scene 2');
 
     return (
         <>
-            <Suspense fallback={null}>
-            <Environment />
+            <Env />
             <Controls />
-                <Provider /> 
+            <Suspense fallback={null}>
+                <Store /> 
             </Suspense>
         </>
 

@@ -5,10 +5,10 @@ import { Canvas } from '@react-three/fiber';
 import store from '../redux';
 
 const CanvasSpace = () => {
-    console.log('canvas space 1');
+
     return (
         <div className='canvasContainer'> 
-            <Canvas camera={{position:[0,0,10]}}>
+            <Canvas camera={{position:[0,0,20]}} gl={{antialias:true}} flat={true} linear={true}>
                 <Provider store={store}>
                     <Scene />
                 </Provider>
@@ -19,7 +19,7 @@ const CanvasSpace = () => {
 
 
 const App = () => {
-    console.log('main app');
+
     return (
         <div className='App'>
             <CanvasSpace />
